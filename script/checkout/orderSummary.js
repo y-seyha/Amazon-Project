@@ -12,6 +12,7 @@ import {
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
@@ -79,6 +80,7 @@ export function renderOrderSummary() {
 
   function deliveryOptionHTML(matchingProduct, cartItem) {
     let html = "";
+
     deliveryOptions.forEach((deliveryOption) => {
       const today = dayjs();
       const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
@@ -120,6 +122,7 @@ export function renderOrderSummary() {
       );
       container.remove();
       updateCartQuantity();
+      renderPaymentSummary();
     });
   });
 
