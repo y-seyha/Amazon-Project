@@ -75,27 +75,50 @@ export class Appliance extends Product {
 }
 
 export let products = [];
-export function loadProducts(fun) {
-  const xhr = new XMLHttpRequest();
 
-  xhr.addEventListener("load", () => {
-    products = JSON.parse(xhr.response).map((productDetail) => {
-      if (productDetail.type === "clothing") {
-        return new Clothing(productDetail);
-      } else if (productDetail.type === "appliance") {
-        return new Appliance(productDetail);
-      }
+export function loadProductsFetch() {
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      return response.json();
+    })
+    .then((productData) => {
+      products = productData.map((productDetail) => {
+        if (productDetail.type === "clothing") {
+          return new Clothing(productDetail);
+        } else if (productDetail.type === "appliance") {
+          return new Appliance(productDetail);
+        }
 
-      return new Product(productDetail);
+        return new Product(productDetail);
+      });
+
+      console.log("load products");
     });
-
-    console.log("load products");
-
-    fun();
-  });
-  xhr.open("GET", "https://supersimplebackend.dev/products");
-  xhr.send(); //request is sent
+  return promise;
 }
+// loadProductsFetch();
+
+// export function loadProducts(fun) {
+//   const xhr = new XMLHttpRequest();
+
+//   xhr.addEventListener("load", () => {
+//     products = JSON.parse(xhr.response).map((productDetail) => {
+//       if (productDetail.type === "clothing") {
+//         return new Clothing(productDetail);
+//       } else if (productDetail.type === "appliance") {
+//         return new Appliance(productDetail);
+//       }
+
+//       return new Product(productDetail);
+//     });
+
+//     console.log("load products");
+
+//     fun();
+//   });
+//   xhr.open("GET", "https://supersimplebackend.dev/products");
+//   xhr.send(); //request is sent
+// }
 
 // export const products = [
 //   {
