@@ -25,6 +25,45 @@ function saveToStorage() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+// export function addToCart(productId) {
+//   let addedMessageTimeoutId; //using closure
+//   let matchingItem;
+
+//   cart.forEach((cartItem) => {
+//     if (productId === cartItem.productId) {
+//       matchingItem = cartItem;
+//     }
+//   });
+
+//   const quantitySelector = document.querySelector(
+//     `.js-quantity-selector-${productId}`
+//   );
+//   const quantity = quantitySelector ? Number(quantitySelector.value) : 1;
+
+//   if (matchingItem) {
+//     matchingItem.quantity += 1;
+//   } else {
+//     cart.push({
+//       productId,
+//       quantity,
+//       deliveryOptionId: "1",
+//     });
+//   }
+
+//   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+//   addedMessage.classList.add("added-to-cart-visible");
+
+//   if (addedMessageTimeoutId) {
+//     clearTimeout(addedMessageTimeoutId);
+//   }
+//   const timeoutId = setTimeout(() => {
+//     addedMessage.classList.remove("added-to-cart-visible");
+//   }, 2000);
+
+//   addedMessageTimeoutId = timeoutId;
+//   saveToStorage();
+// }
+
 export function addToCart(productId) {
   let addedMessageTimeoutId; //using closure
   let matchingItem;
@@ -38,10 +77,10 @@ export function addToCart(productId) {
   const quantitySelector = document.querySelector(
     `.js-quantity-selector-${productId}`
   );
-  const quantity = Number(quantitySelector.value);
+  const quantity = quantitySelector ? Number(quantitySelector.value) : 1;
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity += quantity; // use quantity here for accuracy
   } else {
     cart.push({
       productId,
@@ -50,17 +89,22 @@ export function addToCart(productId) {
     });
   }
 
+  // ✅ Only run this part if the element exists
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
-  addedMessage.classList.add("added-to-cart-visible");
+  if (addedMessage) {
+    addedMessage.classList.add("added-to-cart-visible");
 
-  if (addedMessageTimeoutId) {
-    clearTimeout(addedMessageTimeoutId);
+    if (addedMessageTimeoutId) {
+      clearTimeout(addedMessageTimeoutId);
+    }
+
+    const timeoutId = setTimeout(() => {
+      addedMessage.classList.remove("added-to-cart-visible");
+    }, 2000);
+
+    addedMessageTimeoutId = timeoutId;
   }
-  const timeoutId = setTimeout(() => {
-    addedMessage.classList.remove("added-to-cart-visible");
-  }, 2000);
 
-  addedMessageTimeoutId = timeoutId;
   saveToStorage();
 }
 

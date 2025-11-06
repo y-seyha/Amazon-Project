@@ -100,31 +100,31 @@ export function loadProductsFetch() {
   return promise;
 }
 
-// export function loadProducts(fun) {
-//   const xhr = new XMLHttpRequest();
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
 
-//   xhr.addEventListener("load", () => {
-//     products = JSON.parse(xhr.response).map((productDetail) => {
-//       if (productDetail.type === "clothing") {
-//         return new Clothing(productDetail);
-//       } else if (productDetail.type === "appliance") {
-//         return new Appliance(productDetail);
-//       }
+  xhr.addEventListener("load", () => {
+    products = JSON.parse(xhr.response).map((productDetail) => {
+      if (productDetail.type === "clothing") {
+        return new Clothing(productDetail);
+      } else if (productDetail.type === "appliance") {
+        return new Appliance(productDetail);
+      }
 
-//       return new Product(productDetail);
-//     });
+      return new Product(productDetail);
+    });
 
-//     console.log("load products");
+    console.log("load products");
 
-//     fun();
+    fun();
 
-//     xhr.addEventListener("error", (error) => {
-//       console.log("Unexpected Error, Please Try Again Later");
-//     });
-//   });
-//   xhr.open("GET", "https://supersimplebackend.dev/products");
-//   xhr.send(); //request is sent
-// }
+    xhr.addEventListener("error", (error) => {
+      console.log("Unexpected Error, Please Try Again Later");
+    });
+  });
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send(); //request is sent
+}
 
 // export const products = [
 //   {
