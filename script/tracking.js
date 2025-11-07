@@ -12,20 +12,19 @@ async function loadPage() {
   const order = getOrder(orderId);
   const product = getProduct(productId);
 
-  // console.log(window.location.href);
-  console.log(new URL(window.location.href).searchParams.get("orderId"));
-
-  // console.log(orderId);
-  // console.log(productId);
-
-  // console.log(product);
-  // console.log(order);
   let productDetails;
   order.products.forEach((details) => {
     if (details.productId === product.id) {
       productDetails = details;
     }
   });
+
+  const today = dayjs();
+  const orderTime = dayjs(order.orderTime);
+  const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
+  const percentProgress =
+    ((today - orderTime) / (deliveryTime - orderTime)) * 100;
+  console.log(percentProgress);
 
   const trackingHTML = `
     <a class="back-to-orders-link link-primary" href="orders.html">
@@ -49,13 +48,21 @@ async function loadPage() {
         />
 
         <div class="progress-labels-container">
-          <div class="progress-label">Preparing</div>
-          <div class="progress-label current-status">Shipped</div>
-          <div class="progress-label">Delivered</div>
+          <div class="progress-label 
+          ${percentProgress < 50 ? "current-status" : ""}">Preparing</div>
+          <div class="progress-label current-status
+          ${
+            percentProgress >= 50 && percentProgress < 100
+              ? "current-status"
+              : ""
+          }">Shipped</div>
+          <div class="progress-label
+          ${percentProgress >= 100 ? "current-status" : ""}">Delivered</div>
         </div>
 
         <div class="progress-bar-container">
-          <div class="progress-bar"></div>
+          <div class="progress-bar" 
+          style="width: ${percentProgress}%; " ></div>
         </div>
     `;
 
