@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart.js";
+import { cart, resetCart } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
@@ -91,6 +91,7 @@ export function renderPaymentSummary() {
       } catch (error) {
         console.log("Unexpected Error. Try again later");
       }
+      resetCart();
 
       // After created an order. go to the orders page
       window.location.href = "orders.html";
